@@ -1,0 +1,138 @@
+This directory contains the distribution of scm.  SCM conforms to
+Revised^5 Report on the Algorithmic Language Scheme and the IEEE P1178
+specification.  SCM runs under Amiga, Atari-ST, MacOS, MS-DOS, OS/2,
+NOS/VE, Unicos, VMS, Unix and similar systems.  SCM supports the SLIB
+Scheme library; both SCM and SLIB are GNU packages.
+
+               <http://people.csail.mit.edu/jaffer/SCM>
+
+1 Manifest
+==========
+
+'.gdbinit'       provides commands for debugging SCM with GDB
+'COPYING'        GNU GENERAL PUBLIC LICENSE
+'COPYING.LESSER' GNU LESSER GENERAL PUBLIC LICENSE
+'ChangeLog'      changes to SCM.
+'Idiffer.scm'    Linear-space O(PN) sequence comparison.
+'Iedline.scm'    Gnu readline input editing.
+'Init.scm'       Scheme initialization.
+'Link.scm'       Dynamic link/loading.
+'Macro.scm'      Supports Syntax-Rules Macros.
+'Makefile'       builds SCMLIT using the 'make' program.
+'QUICKREF'       Quick Reference card for R4RS and IEEE Scheme.
+'README'         contains a MANIFEST, INSTALLATION INSTRUCTIONS, hints
+                 for EDITING SCHEME CODE, and a TROUBLE SHOOTING GUIDE.
+'Transcen.scm'   inexact builtin procedures.
+'bench.scm'      computes and records performance statistics of pi.scm.
+'build.bat'      invokes build.scm for MS-DOS
+'build.scm'      database for compiling and linking new SCM programs.
+'byte.c'         strings as bytes.
+'bytenumb.c'     Byte-number conversions.
+'compile.scm'    Hobbit compilation to C.
+'continue-ia64.S'replaces make_root_continuation(),
+                 make_continuation(), and dynthrow() in continue.c
+'continue.c'     continuations.
+'continue.h'     continuations.
+'crs.c'          interactive terminal control.
+'debug.c'        debugging, printing code.
+'differ.c'       Linear-space O(PN) sequence comparison.
+'dynl.c'         dynamically load object files.
+'ecrt0.c'        discover the start of initialized data space
+                 dynamically at runtime.
+'edline.c'       Gnu readline input editing (get
+                 ftp.sys.toronto.edu:/pub/rc/editline.shar).
+'eval.c'         evaluator, apply, map, and foreach.
+'example.scm'    example from R4RS which uses inexact numbers.
+'fdl.texi'       GNU Free Documentation License.
+'findexec.c'     find the executable file function.
+'get-contoffset-ia64.c'makes contoffset-ia64.S for inclusion by
+                 continue-ia64.S
+'gmalloc.c'      Gnu malloc(); used for unexec.
+'gsubr.c'        make_gsubr for arbitrary (< 11) arguments to C
+                 functions.
+'ioext.c'        system calls in common between PC compilers and unix.
+'lastfile.c'     find the point in data space between data and
+                 libraries.
+'macosx-config.h'Included by unexmacosx.c and lastfile.c.
+'mkimpcat.scm'   build SCM-specific catalog for SLIB.
+'patchlvl.h'     patchlevel of this release.
+'pi.c'           computes digits of pi [cc -o pi pi.c;time pi 100 5].
+'pi.scm'         computes digits of pi [type (pi 100 5)].  Test
+                 performance against pi.c.
+'posix.c'        posix library interface.
+'pre-crt0.c'     loaded before crt0.o on machines which do not remap
+                 part of the data space into text space in unexec.
+'r4rstest.scm'   tests conformance with Scheme specifications.
+'ramap.c'        array mapping
+'record.c'       proposed 'Record' user definable datatypes.
+'repl.c'         error, read-eval-print loop, read, write and load.
+'rgx.c'          string regular expression match.
+'rope.c'         C interface functions.
+'sc2.c'          procedures from R2RS and R3RS not in R4RS.
+'scl.c'          inexact arithmetic
+'scm.1'          unix style man page.
+'scm.c'          initialization, interrupts, and non-IEEE utility
+                 functions.
+'scm.doc'        man page generated from scm.1.
+'scm.h'          data type and external definitions of SCM.
+'scm.texi'       SCM installation and use.
+'scmfig.h'       contains system dependent definitions.
+'scmmain.c'      initialization, interrupts, and non-IEEE utility
+                 functions.
+'script.c'       utilities for running as '#!'  script.
+'setjump.h'      continuations, stacks, and memory allocation.
+'setjump.mar'    provides setjump and longjump which do not use $unwind
+                 utility on VMS.
+'setjump.s'      provides setjump and longjump for the Cray YMP.
+'socket.c'       BSD socket interface.
+'split.scm'      example use of crs.c.  Input, output, and diagnostic
+                 output directed to separate windows.
+'subr.c'         the rest of IEEE functions.
+'sys.c'          call-with-current-continuation, opening and closing
+                 files, storage allocation and garbage collection.
+'time.c'         functions dealing with time.
+'ugsetjump.s'    provides setjump and longjump which work on Ultrix
+                 VAX.
+'unexalpha.c'    Convert a running program into an Alpha executable
+                 file.
+'unexec.c'       Convert a running program into an executable file.
+'unexelf.c'      Convert a running ELF program into an executable file.
+'unexhp9k800.c'  Convert a running HP-UX program into an executable
+                 file.
+'unexmacosx.c'   Convert a running program into an executable file
+                 under MacOS X.
+'unexsgi.c'      Convert a running program into an IRIX executable
+                 file.
+'unexsunos4.c'   Convert a running program into an executable file.
+'unif.c'         uniform vectors.
+'unix.c'         non-posix system calls on unix systems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

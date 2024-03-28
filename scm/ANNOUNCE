@@ -1,0 +1,196 @@
+This message announces the availability of Scheme release scm-5f4.
+
+SCM conforms to Revised^5 Report on the Algorithmic Language Scheme
+and the IEEE P1178 specification.  SCM is written in C and runs under
+Amiga, Atari-ST, MacOS, MS-DOS, OS/2, NOS/VE, Unicos, VMS, Windows,
+Unix, and similar systems.
+
+SCM is free software and part of the GNU project.  It is released
+under the GNU Lesser General Public License (LGPL).
+
+Documentation and distributions in several formats are linked from
+SCM's home page:
+
+	       <http://people.csail.mit.edu/jaffer/SCM>
+
+Links to distributions of SCM and related softwares are at the end of
+this message.
+
+				-=-=-
+scm-5f4 news:
+
+scm-5f4 releases Radey Shouman's vicinity extension and fixes
+compiler-dependent arithmetic problems.  Details at
+<http://cvs.savannah.gnu.org/viewvc/*checkout*/scm/scm/ChangeLog>
+
+2023-10-16  Aubrey Jaffer  <agj@alum.mit.edu>
+	* subr.c (scm_big_and): Patch from Radey to fix
+	 (logior 0 (ash -1 64)) => 0 on 64 bit hardware.
+2023-10-14  Aubrey Jaffer  <agj@alum.mit.edu>
+	* mkimpcat.scm:  Aubrey Jaffer  <agj@alum.mit.edu>
+	Patch from Radey Shouman to use SLIB's new catalog:expand-path.
+2023-08-15  shouman  <shouman@jaffer-Vivobook-ASUSLaptop-X1703ZA-K1703ZA>
+	* debug.c:
+	Summary: Fix recent breakage in printing #@lambda expressions.
+	* debug.c, eval.c, repl.c, scm.h, sys.c:
+	Use IFLAGs for environment markers instead of
+	integers, to simplify debugging.  Bash egc roots that are collected during main heap gc,
+	so we don't keep pointers to free cells.
+2023-08-04  Radey  <shouman@comcast.net>
+	* build.scm (gnu-win32 platform): For compile-dll-c-files and make-archive change "dllwrap"
+	call to "gcc -shared", dllwrap is deprecated.  For link-c-program add linker directives to produce
+	.def and .lib files.  scm.lib is required for linking dlls.
+	* scmfig.h: #define HAVE_DYNL if SCM_WIN_DLL is #defined, so init_dynl is called.
+2023-08-04  Radey Shouman  <shouman@comcast.net>
+	* scl.c (scm_intexpt): Fix overflow detection so that it works
+	without -fwrapv and with optimization.  Uses a similar strategy to
+	that used for fixnum product.
+2023-08-04  Radey Shouman  <shouman@comcast.net>
+	* r4rstest.scm (test-bignum): Added some tests of EXPT requiring bignums.
+2023-07-28  Radey  Shouman <shouman@comcast.net>
+	* r4rstest.scm (test-bignum): Add test for bignum ash of -1.
+2023-07-28  Radey Shouman <shouman@comcast.net>
+	* subr.c (scm_big_ash): Fix bug when first argument is 0 or -1 and
+	shift is a multiple of bigdig bits.  Gave unpredictable results
+	due to internal array bounds error.
+2023-07-24  Radey Shouman  <rshouman@pmdlinux>
+	* scm.h (SCM_DLL_EXPORT, SCM_EXPORT): Changed for win32 so
+	that build with dynamic loading works.
+	* repl.c (input_waiting): For win32 fix so that this works
+	for an input pipe.
+	* scm.c (init_buf0):  For win32 make stdin unbuffered if
+	an input pipe because it is when running in an emacs buffer.
+2023-07-21  Radey Shouman  <shouman@comcast.net>
+	* r4rstest.scm: Add a few more bignum arithmetic tests.  Beautify
+	output of some float r/w tests by not printing closure.
+	* scl.c (product): Fix fixnum*fixnum case.  The result of an
+	overflowing signed product in C is implementation dependent, and
+	gcc uses this freedom to optimize out a check.  Fixed by either
+	using unsigned product or by using new SCM_LLONG optional type
+	macro.
+	* sys.c (scm_maksubr, scm_make_cont): Improve clarity.
+	* scmfig.h: Add conditional #defines for SCM_LLONG, a signed type
+	wide enough to hold the product of scm_int*scm_int.  Defined for
+	x86_64 and x86_32.  Defining this will enable better performance
+	for product subr.
+	* scm.h: Added typedefs scm_int and scm_uint, currently these
+	are always long and unsigned long, but that would change for
+	a 64-bit windows port.
+2023-07-16  Radey Shouman  <shouman@comcast.net>
+	* rgx.c (lregcomp):  Replace calls to scm_protect_temp with
+	volatile SCM array on stack.
+	* unif.c (make_sh_array): Replace calls to scm_protect_temp with
+	volatile SCM array on stack.
+	* ramap.c (ramapc, ramap, rafe, scm_array_index_for_each, array_imap):
+	Replace calls to scm_protect_temp with volatile SCM array on stack.
+	* posix.c (getgroups):  Replace calls to scm_protect_temp with
+	volatile SCM array on stack.
+	* eval.c (map, for_each):  Replace calls to scm_protect_temp with
+	volatile SCM array on stack.
+	* subr.c (divbigbig): Use volatile SCM array on stack for gc
+	protection.  Float test now passes with -O3.
+	* scl.c (big2str, istr2flo, pmantexp2dbl): Add gc protection for
+	temporary SCM cells using volatile SCM array on stack.  Remove
+	calls to scm_protect_temp*.
+2023-07-15  Radey Shouman  <shouman@comcast.net>
+	* sys.c (scm_egc): Use s_numheaps instead of literal string.
+2023-07-13  Aubrey Jaffer  <agj@alum.mit.edu>
+	* keysymdef.scm, x11.scm: Updated.
+	* Makefile (*.opt): Removed Makefile dependency so that
+	user's customization persists.
+2023-07-12  Radey Shouman <shouman@comcast.net>
+	* ramap.c (scm_array_index_for_each): use scm_protect_temp2 instead
+	of scm_protect_temp twice.
+	* scl.c (istr2flo): GC protect locals manstr and second.
+	* subr.c (divbigbig): GC protect locals quocell and dencell.
+	* sys.c, scm.h: Add scm_protect_temp2, to simplify GC protection
+	of two local variables.  Procedure does literally nothing, but calling
+	it should make it harder to optimize SCM locals away.
+2023-07-09  Radey Shouman  <shouman@comcast.net>
+	* Make all .opt files depend on Makefile, so they do not need
+	to be deleted after editing Makefile.
+2023-06-30  Aubrey Jaffer  <agj@alum.mit.edu>
+	* Makefile ($(distdir)scm-$(VERSION)-$(RELEASE).exe): Added HTML
+	documentation dependencies.
+	* scm.nsi: Commented out test for SLIB.
+2023-06-30  Aubrey Jaffer  <agj@alum.mit.edu>
+	* Makefile ($(distdir)scm-$(VERSION)-$(RELEASE).exe): Added HTML
+	documentation dependencies.
+	* scm.nsi: Commented out test for SLIB.
+2023-06-26  Aubrey Jaffer  <agj@alum.mit.edu>
+	* r4rstest.scm (test-bignum): Added multiplication test for GCC
+	-O1 optimizer bug.
+2021-09-01  Aubrey Jaffer  <agj@alum.mit.edu>
+	* scl.c (istr2flo): Corrected case #ifndef SINGLES.
+	* unif.c (cvref): Corrected case #ifndef SINGLES.
+2022-04-28  Radey  <shouman@comcast.net>
+	* repl.c (scm_iprin1): When writing a string, reproduce all
+	escaped characters accepted as input: \0, \f, \n, \r, \t, \a,
+	\v, \" & \\.  For _WIN32, #define strcasecmp as stricmp.
+2022-04-27  Radey  <shouman@comcast.net>
+	* socket.c (l_servinfo): Fix case of first argument an integer.
+	Add some casts to avert warnings.
+
+				-=-=-
+
+SCM source is available from:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/scm-5f4.zip>
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/scm-5f4-1.src.rpm>
+Also available as binary RPM:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/scm-5f4-1.x86_64.rpm>
+Also available as MS-Windows installer (older version):
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/scm-5f4-1.exe>
+
+SLIB is a portable Scheme library which SCM uses:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/slib-3c1.zip>
+Also available as RPM:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/slib-3c1-1.src.rpm>
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/slib-3c1-1.noarch.rpm>
+Also available as MS-Windows installer:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/slib-3c1-1.exe>
+
+JACAL is a symbolic math system written in Scheme:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/jacal-1c8.zip>
+Also available as RPM:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/jacal-1c8-1.src.rpm>
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/jacal-1c8-1.noarch.rpm>
+Also available as MS-Windows installer:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/jacal-1c8-1.exe>
+
+WB is a disk based, sorted associative array (B-tree) library for SCM.
+Using WB, large databases can be created and managed from SCM.
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/wb-2b4.zip>
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/wb-2b4-1.src.rpm>
+Also available as binary RPM:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/wb-2b4-1.x86_64.rpm>
+
+FreeSnell is a program to compute optical properties of multilayer
+thin-film coatings:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/FreeSnell-1c4.zip>
+Also available as MS-Windows installer:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/FreeSnell-1c4-1.exe>
+
+SIMSYNCH is a digital logic simulation system written in SCM.
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/synch-1c5.zip>
+
+XSCM is a X windows interface package which works with SCM:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/xscm-2.01.tar.gz>
+
+TURTLSCM is a turtle graphics package which works with SCM on MS-DOS
+or X11 machines:
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/turtlegr.tar.gz>
+
+#! implements "#!" (POSIX) shell-scripts for MS-DOS batch files.
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/sharpbang.zip>
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/#!.zip>
+
+SLIB-PSD is a portable debugger for Scheme (requires emacs editor):
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/slib-psd1-3.tar.gz>
+
+MacSCM is a Macintosh applications building package which works with
+SCM (similar to XSCM).
+ <http://groups.csail.mit.edu/mac/ftpdir/scm/macscm.tar.Z>
+
+Programs for printing and viewing TexInfo documentation (which SCM
+has) come with GNU Emacs or can be obtained via ftp from:
+ <ftp://ftp.gnu.org/pub/gnu/texinfo>
